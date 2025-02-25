@@ -5,11 +5,10 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="logo">MyStore</div>
-      <ul>
-        <li><Link to="#shop">Shop</Link></li> {/* Home bo'limini olib tashladik */}
-        <li><Link to="#contact">Contact</Link></li>
-        <li><Link to="#cart">Cart (0)</Link></li> {/* Savatcha soni */}
-      </ul>
+      <Link to="/">Shop</Link>
+      <Link to="/contact">Contact</Link>
+      <Link to="/cart">Go to Cart 🛒</Link>
+      
     </nav>
   );
 }
