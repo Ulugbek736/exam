@@ -1,13 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function Cart({ cart }) {
+function Cart({ cart, updateCart }) {
   const navigate = useNavigate();
 
   // Jami narxni hisoblash
-  const total = cart.reduce((sum, item) => sum + parseFloat(item.price.slice(1)), 0);
-
-  console.log(cart); // 🔍 Mahsulotlar obyektini konsolda tekshirish
+  const total = cart.reduce((sum, item) => sum + item.quantity * parseFloat(item.price.slice(1)), 0);
 
   return (
     <section id="cart" className="cart">
@@ -27,6 +25,11 @@ function Cart({ cart }) {
               <div className="cart-item-details">
                 <h3 className="cart-item-name">{item.name}</h3>
                 <p className="cart-item-price">{item.price}</p>
+                <div className="quantity-controls">
+                  <button onClick={() => updateCart(item.id, -1)}>➖</button>
+                  <span>{item.quantity}</span>
+                  <button onClick={() => updateCart(item.id, 1)}>➕</button>
+                </div>
               </div>
             </div>
           ))}
