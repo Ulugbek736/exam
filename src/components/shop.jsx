@@ -1,37 +1,56 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const products = [
-  { id: 1, name: "Product 1", price: "$1025", imgSrc: "/ip13.png" },
-  { id: 2, name: "Product 2", price: "$2040", imgSrc: "/mac.png" },
-  { id: 3, name: "Product 3", price: "$160", imgSrc: "/camera.png" },
-  { id: 4, name: "Product 4", price: "$40", imgSrc: "/jeans.png" },
-  { id: 5, name: "Product 5", price: "$15", imgSrc: "/led.png" },
-  { id: 6, name: "Product 6", price: "$60", imgSrc: "/t-shirt.webp" },
-  { id: 7, name: "Product 7", price: "$60", imgSrc: "/t-shirtt.webp" },
-  { id: 8, name: "Product 8", price: "$5", imgSrc: "/cap.webp" },
-];
-
-function Shop({ addToCart }) {
+function Cart({ cart, updateCart }) {
   const navigate = useNavigate();
 
+  // Jami narxni hisoblash
+  const total = cart.reduce((sum, item) => sum + item.quantity * parseFloat(item.price.slice(1)), 0);
+
   return (
-    <section id="shop" className="shop">
-      <h2>Shop 🏬</h2>
-      <div className="products">
-        {products.map((product) => (
-          <div key={product.id} className="product-card">
-            <img src={product.imgSrc} alt={product.name} />
-            <h3>{product.name}</h3>
-            <p>{product.price}</p>
-            <button onClick={() => addToCart(product)}>Add to Cart</button>
-          </div>
-        ))}
+    <section id="cart" className="cart">
+      <h2 className="cart-title">Your Cart 🛒</h2>
+
+      {cart.length === 0 ? (
+        <p className="empty-cart">Cart is empty!</p>
+      ) : (
+        <div className="cart-items">
+          {cart.map((item, index) => (
+            <div key={index} className="cart-item">
+              <img 
+                src={item.imgSrc ? item.imgSrc : "/images/no-image.jpg"} 
+                alt={item.name} 
+                className="cart-item-image" 
+              />
+              <div className="cart-item-details">
+                <h3 className="cart-item-name">{item.name}</h3>
+                <p className="cart-item-price">{item.price}</p>
+                <div className="quantity-controls">
+                  <button onClick={() => updateCart(item.id, -1)}>➖</button>
+                  <span>{item.quantity}</span>
+                  <button onClick={() => updateCart(item.id, 1)}>➕</button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="cart-total">
+        <h3>Total: <span>${total.toFixed(2)}</span></h3>
       </div>
-     
+
+      <div className="cart-buttons">
+        <button className="checkout-btn" onClick={() => alert("Checkout process...")}>
+          Checkout
+        </button>
+        <button className="back-btn" onClick={() => navigate("/")}>
+          Back to Shop 🛍
+        </button>
+      </div>
     </section>
   );
 }
 
-export default Shop;
+export default Cart;
 
